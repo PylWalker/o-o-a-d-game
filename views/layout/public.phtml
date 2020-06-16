@@ -1,0 +1,554 @@
+<?php
+	$listCartItems = $this->view->listCartItems;
+	if(isset($this->view->minAndMaxPrice)){
+		$minAndMaxPrice = $this->view->minAndMaxPrice;
+	}
+	// echo "<pre>";
+	// print_r($listCartItems);
+	// echo "</pre>";
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title id="page-title"> OOADgame. </title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+  <link rel="icon" type="image/png" href="images/icons/shortcut_icon.png"/>
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="public/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="public/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="public/fonts/themify/themify-icons.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="public/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="public/fonts/elegant-font/html-css/style.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="public/vendor/animate/animate.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="public/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="public/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="public/vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="public/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="public/vendor/slick/slick.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="public/vendor/lightbox2/css/lightbox.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="public/vendor/noui/nouislider.min.css">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="public/css/util.css">
+  <link rel="stylesheet" type="text/css" href="public/css/main.css">
+<!--===============================================================================================-->
+	<style>
+	#updating {
+	  position: relative;
+	}
+
+	#updating .tooltiptext {
+	  visibility: hidden;
+		width: 230px;
+		background-color: #f5f5f5;
+		font-family: Montserrat-Regular;
+		font-size: 14px;
+    color: #888888;
+		text-align: center;
+		border-radius: 6px;
+		padding: 5px 0;
+	  
+	  /* Position the tooltip */
+	  position: absolute;
+	  z-index: 1;
+	  top: 100%;
+	  left: 50%;
+	  margin-left: -60px;
+	}
+
+	#updating:hover .tooltiptext {
+	  visibility: visible;
+	}
+	</style>
+</head>
+<!-- <body class="animsition"> -->
+<body>
+<!-- Header -->
+  <header class="header1">
+    <!-- Header desktop -->
+    <div class="container-menu-header">
+      <div class="topbar">
+        <div class="topbar-social">
+          <a href="https://www.facebook.com/pyl.walker" target="_blank" class="topbar-social-item fa fa-facebook"></a>
+          <a href="https://www.instagram.com/_pylw/" target="_blank" class="topbar-social-item fa fa-instagram"></a>
+          <a href="#" id="updating" class="topbar-social-item fa fa-pinterest-p"><span class="tooltiptext">Updating Pinterest link 📌</span></a>
+          <a href="#" id="updating" class="topbar-social-item fa fa-youtube-play"><span class="tooltiptext">Updating Youtube link 📷</span></a>
+        </div>
+
+        <span class="topbar-child1">
+          20% off for the first order 🛒
+        </span>
+
+        <div class="topbar-child2">
+          <span class="topbar-email">
+          	<?php if(isset($_SESSION['auth'])){
+          					echo "You were logged in with email: ".substr_replace($_SESSION['auth']->email, "xxxxxx", 2, 5);
+          				} else {
+          					echo "You are not logged in ⚠";
+          				} 
+          	?>           
+          </span>
+
+          <div class="topbar-language rs1-select2">
+            <!-- <select class="selection-1" name="money-type" disabled>
+              <option>VND</option>
+            </select> -->
+            <?php if(isset($_SESSION['auth'])){
+          					echo "&nbsp;&nbsp;&nbsp;&nbsp;<a href='?action=logout'>LOGOUT</a>";
+          				} else {
+          					echo "&nbsp;&nbsp;&nbsp;&nbsp;<a href='?action=register'>REGISTER</a>";
+          				} 
+          	?>
+            
+          </div>
+        </div>
+      </div>
+
+      <div class="wrap_header">
+        <!-- Logo -->
+        <a href="?action=index" class="logo">
+          <img src="public/images/icons/logo.png" alt="IMG-LOGO">
+        </a>
+
+        <!-- Menu -->
+        <div class="wrap_menu">
+          <nav class="menu">
+            <ul class="main_menu">
+              <li id="home">
+                <a href="?action=index">Home</a>
+              </li>
+
+              <li id="games">
+                <a href="?action=games">Games</a>
+              </li>
+
+              <li id="cart">
+                <a href="?action=cart">Cart</a>
+              </li>
+
+              <li>
+                <a href="">Features</a>
+              </li>
+
+              <li>
+                <a href="">Blog</a>
+              </li>
+
+              <li>
+                <a href="">About</a>
+              </li>
+
+              <li>
+                <a href="">Contact</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+        <!-- Header Icon -->
+        <div class="header-icons">
+        	<?php if(isset($_SESSION['auth'])){
+        					$idAccount = $_SESSION['auth']->id;
+        					$shortEmail = substr($_SESSION['auth']->email, 0, 5);
+        					echo "<a href='?action=user-detail&id=$idAccount'>$shortEmail 👩‍💻</a>";
+        				} else if(!isset($_GET['action'])||$_GET['action'] != "login"){
+        					echo "<a href='?action=login' class='header-wrapicon1 dis-block'>LOGIN 🚀</a>";
+        				} 
+        	?>
+          
+            <!-- <img src="public/images/icons/icon-header-01.png" class="header-icon1" alt="ICON"> -->
+          <span class="linedivide1"></span>
+
+          <div class="header-wrapicon2">
+            <img src="public/images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+            <div id="count-cart-item"><span class="header-icons-noti" id="count"><?php echo count($listCartItems); ?></span></div>
+
+            <!-- Header cart noti -->
+            <div class="header-cart header-dropdown">
+              <ul id="cart-item" class="header-cart-wrapitem">
+              	<?php
+	            		if(!isset($_SESSION['auth'])){
+	            			echo "You must login to use the cart";
+	            		} else if(count($listCartItems) == 0){
+	            			echo "You have no items in the cart";
+	            		}
+	            	?>
+              	<?php
+              		$total = 0;
+              		foreach($listCartItems as $rows){ 
+              	?>
+	                <li class="header-cart-item">
+	                  <div class="header-cart-item-img">
+	                    <img src="<?php echo $rows->image_720_660; ?>" alt="IMG">
+	                  </div>
+
+	                  <div class="header-cart-item-txt">
+	                    <a href="?action=game-detail&id=<?php echo $rows->game_id; ?>" class="header-cart-item-name">
+	                      <?php echo $rows->title; ?>
+	                    </a>
+
+	                    <span class="header-cart-item-info">
+	                      <?php echo $rows->quantity; ?> x <?php echo number_format($rows->game_price, 0, ",", ".")." VND"; ?>
+	                    </span>
+	                  </div>
+	                </li>
+              	<?php
+              			$total += $rows->quantity * $rows->game_price;
+              		} 
+              	?>
+              </ul>
+
+              <div id="cart-total" class="header-cart-total">
+                <?php
+                	echo "💰 Total: ".number_format($total, 0, ",", ".")." VND";
+                ?>
+              </div>
+
+              <div class="header-cart-buttons">
+                <div class="header-cart-wrapbtn">
+                  <!-- Button -->
+                  <a href="?action=cart" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+                    View Cart
+                  </a>
+                </div>
+
+                <div class="header-cart-wrapbtn">
+                  <!-- Button -->
+                  <a href="?action=check-out" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+                    Check Out
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+	<?php $this->ShowContent();?>
+	<!-- Footer -->
+		<footer class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+			<div class="flex-w p-b-90">
+				<div class="w-size6 p-t-30 p-l-15 p-r-15 respon3">
+					<h4 class="s-text12 p-b-30">
+						GET IN TOUCH
+					</h4>
+
+					<div>
+						<p class="s-text7 w-size27">
+							Any questions? Let us know in store at 8th floor, 379 Hudson St, New York, NY 10018 or call us on (+1) 96 716 6879
+						</p>
+
+						<div class="flex-m p-t-30">
+							<a href="#" class="fs-18 color1 p-r-20 fa fa-facebook"></a>
+							<a href="#" class="fs-18 color1 p-r-20 fa fa-instagram"></a>
+							<a href="#" class="fs-18 color1 p-r-20 fa fa-pinterest-p"></a>
+							<a href="#" class="fs-18 color1 p-r-20 fa fa-snapchat-ghost"></a>
+							<a href="#" class="fs-18 color1 p-r-20 fa fa-youtube-play"></a>
+						</div>
+					</div>
+				</div>
+
+				<div class="w-size7 p-t-30 p-l-15 p-r-15 respon4">
+					<h4 class="s-text12 p-b-30">
+						Categories
+					</h4>
+
+					<ul>
+						<li class="p-b-9">
+							<a href="#" class="s-text7">
+								Men
+							</a>
+						</li>
+
+						<li class="p-b-9">
+							<a href="#" class="s-text7">
+								Women
+							</a>
+						</li>
+
+						<li class="p-b-9">
+							<a href="#" class="s-text7">
+								Dresses
+							</a>
+						</li>
+
+						<li class="p-b-9">
+							<a href="#" class="s-text7">
+								Sunglasses
+							</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="w-size7 p-t-30 p-l-15 p-r-15 respon4">
+					<h4 class="s-text12 p-b-30">
+						Links
+					</h4>
+
+					<ul>
+						<li class="p-b-9">
+							<a href="#" class="s-text7">
+								Search
+							</a>
+						</li>
+
+						<li class="p-b-9">
+							<a href="#" class="s-text7">
+								About Us
+							</a>
+						</li>
+
+						<li class="p-b-9">
+							<a href="#" class="s-text7">
+								Contact Us
+							</a>
+						</li>
+
+						<li class="p-b-9">
+							<a href="#" class="s-text7">
+								Returns
+							</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="w-size7 p-t-30 p-l-15 p-r-15 respon4">
+					<h4 class="s-text12 p-b-30">
+						Help
+					</h4>
+
+					<ul>
+						<li class="p-b-9">
+							<a href="#" class="s-text7">
+								Track Order
+							</a>
+						</li>
+
+						<li class="p-b-9">
+							<a href="#" class="s-text7">
+								Returns
+							</a>
+						</li>
+
+						<li class="p-b-9">
+							<a href="#" class="s-text7">
+								Shipping
+							</a>
+						</li>
+
+						<li class="p-b-9">
+							<a href="#" class="s-text7">
+								FAQs
+							</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="w-size8 p-t-30 p-l-15 p-r-15 respon3">
+					<h4 class="s-text12 p-b-30">
+						Newsletter
+					</h4>
+
+					<!-- <form>
+ -->						<div class="effect1 w-size9">
+							<input class="s-text7 bg6 w-full p-b-5" type="text" name="email" placeholder="email@example.com">
+							<span class="effect1-line"></span>
+						</div>
+
+						<div class="w-size2 p-t-20">
+							<!-- Button -->
+							<button class="flex-c-m size2 bg4 bo-rad-23 hov1 m-text3 trans-0-4" onclick="newsletter()">
+								Subscribe
+							</button>
+						</div>
+
+					<!-- </form> -->
+					<script type="text/javascript">
+						function newsletter(){
+							swal("Your email 📧", "is ready to receive newsletter!", "success");
+						}
+					</script>
+				</div>
+			</div>
+
+			<div class="t-center p-l-15 p-r-15">
+				<a href="#">
+					<img class="h-size2" src="public/images/icons/paypal.png" alt="IMG-PAYPAL">
+				</a>
+
+				<a href="#">
+					<img class="h-size2" src="public/images/icons/visa.png" alt="IMG-VISA">
+				</a>
+
+				<a href="#">
+					<img class="h-size2" src="public/images/icons/mastercard.png" alt="IMG-MASTERCARD">
+				</a>
+
+				<a href="#">
+					<img class="h-size2" src="public/images/icons/express.png" alt="IMG-EXPRESS">
+				</a>
+
+				<a href="#">
+					<img class="h-size2" src="public/images/icons/discover.png" alt="IMG-DISCOVER">
+				</a>
+
+				<div class="t-center s-text8 p-t-20">
+					Copyright © 2018 All rights reserved. | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+				</div>
+			</div>
+		</footer>
+
+
+
+		<!-- Back to top -->
+		<div class="btn-back-to-top bg0-hov" id="myBtn">
+			<span class="symbol-btn-back-to-top">
+				<i class="fa fa-angle-double-up" aria-hidden="true"></i>
+			</span>
+		</div>
+
+		<!-- Container Selection -->
+		<div id="dropDownSelect1"></div>
+		<div id="dropDownSelect2"></div>
+
+
+
+	<!--===============================================================================================-->
+		<script type="text/javascript" src="public/vendor/jquery/jquery-3.2.1.min.js"></script>
+	<!--===============================================================================================-->
+		<script type="text/javascript" src="public/vendor/animsition/js/animsition.min.js"></script>
+	<!--===============================================================================================-->
+		<script type="text/javascript" src="public/vendor/bootstrap/js/popper.js"></script>
+		<script type="text/javascript" src="public/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<!--===============================================================================================-->
+		<script type="text/javascript" src="public/vendor/select2/select2.min.js"></script>
+		<script type="text/javascript">
+			$(".selection-1").select2({
+				minimumResultsForSearch: 20,
+				dropdownParent: $('#dropDownSelect1')
+			});
+
+			$(".selection-2").select2({
+				minimumResultsForSearch: 20,
+				dropdownParent: $('#dropDownSelect2')
+			});
+		</script>
+	<!--===============================================================================================-->
+		<script type="text/javascript" src="public/vendor/slick/slick.min.js"></script>
+		<script type="text/javascript" src="public/js/slick-custom.js"></script>
+	<!--===============================================================================================-->
+		<script type="text/javascript" src="public/vendor/noui/nouislider.min.js"></script>
+		<script type="text/javascript">
+			/*[ No ui ]
+	    ===========================================================*/
+	    var filterBar = document.getElementById('filter-bar');
+
+	    noUiSlider.create(filterBar, {
+	        start: [ <?php echo $minAndMaxPrice[0]; ?>, <?php echo $minAndMaxPrice[1]; ?> ],
+	        connect: true,
+	        range: {
+	            'min': <?php echo $minAndMaxPrice[0]; ?>,
+	            'max': <?php echo $minAndMaxPrice[1]; ?>
+	        }
+	    });
+
+	    var skipValues = [
+	    document.getElementById('value-lower'),
+	    document.getElementById('value-upper')
+	    ];
+
+	    filterBar.noUiSlider.on('update', function( values, handle ) {
+	        skipValues[handle].innerHTML = Math.round(values[handle]/1000)*1000 ;
+	    });
+		</script>
+<!--===============================================================================================-->
+		<script type="text/javascript" src="public/vendor/sweetalert/sweetalert.min.js"></script>
+		<script type="text/javascript">
+			$('.block2-btn-addcart').each(function(){
+				var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
+				var game_id = $(this).parent().parent().parent().find('.block2-id').html();
+				$(this).on('click', function(){
+					<?php if(isset($_SESSION['auth'])){ ?>
+						addCartItem(game_id, '1');
+						swal("1 key of " + nameProduct, "is added to cart !", "success");
+						$('#count-cart-item').load(location.href + " #count-cart-item");
+						$("#cart-item").load(location.href + " #cart-item");
+						$("#cart-total").load(location.href + " #cart-total");
+					<?php } else { ?>
+						swal("YOU MUST LOGIN", "to add " + nameProduct + " to your cart!", "warning");
+					<?php } ?>
+				});
+			});
+		</script>
+		<script type="text/javascript">
+			$('.block2-btn-addwishlist').each(function(){
+			 	var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
+			 	$(this).on('click', function(){
+			 		swal(nameProduct, "is added to wishlist !", "success");
+			 	});
+			});
+		</script>
+		<script type="text/javascript">
+			$('.btn-addcart-product-detail').each(function(){
+				var nameProduct = $('.product-detail-name').html();
+				$(this).on('click', function(){
+					<?php if(isset($_SESSION['auth'])){ ?>
+						var quantity = document.getElementById('quantity').value;
+						var game_id = <?php echo $_GET['id']; ?>;
+						var account_id = <?php echo $_SESSION['auth']->id; ?>;
+						addCartItem(game_id, quantity);
+						swal(quantity + " key of " + nameProduct, "is added to cart !", "success");
+						$('#count-cart-item').load(location.href + " #count-cart-item");
+						$("#cart-item").load(location.href + " #cart-item");
+						$("#cart-total").load(location.href + " #cart-total");
+					<?php } else { ?>
+						swal("YOU MUST LOGIN", "to add " + nameProduct + " to your cart!", "warning");
+					<?php } ?>
+				});
+			});
+		</script>
+		<script type="text/javascript">
+			function addCartItem(game_id, quantity){
+				// document.getElementById('result').innerHTML = "game_id = " + game_id + " quantity = " + quantity + " account_id = " + account_id;
+				$.ajax({
+					type: 'GET',
+		      url: "",
+		      data: "action=add-cart-item&game_id=" + game_id + "&quantity=" + quantity,
+		      success: function() {
+		      	console.log("Added");
+		      }
+				});
+			}
+		</script>
+		<script type="text/javascript">
+			function ajaxRemoveCartItem(game_id, account_id){
+				// document.getElementById('result').innerHTML = "game_id = " + game_id + " quantity = " + quantity + " account_id = " + account_id;
+				$.ajax({
+					type: 'GET',
+		      url: "",
+		      data: "action=remove-cart-item&game_id=" + game_id + "&account_id=" + account_id,
+		      success: function() {
+		      	location.reload();
+		      }
+				});
+			}
+		</script>
+	<!--===============================================================================================-->
+		<script src="public/js/main.js"></script>
+
+	</body>
+</html>

@@ -1,0 +1,176 @@
+<?php if(isset($_SESSION['auth'])){ ?>
+<?php
+  $listCartItems = $this->view->listCartItems;
+  $keyCount = 0;
+  foreach ($listCartItems as $key){
+    $keyCount += $key->quantity;
+  }
+?>
+<script type="text/javascript">
+  var e = document.getElementById('cart');
+  e.setAttribute("class", "sale-noti");
+  document.getElementById('page-title').innerHTML = 'Check Out';
+</script>
+<!-- Title Page -->
+<section class="bg-title-page p-t-40 p-b-50 flex-col-c-m" style="background-image: url(images/check_out_cover.png);">
+  <h2 class="l-text2 t-center">
+    Check Out 💵
+  </h2>
+</section>
+
+<!-- content page -->
+<section class="bgwhite p-t-60">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-lg-9 p-b-75">
+        <div class="p-r-50 p-r-0-lg">
+          <!-- item blog -->
+          <div class="item-blog p-b-80">
+            <a class="item-blog-img pos-relative dis-block hov-img-zoom">
+              <img src="images/check_out_cover.png" alt="IMG-BLOG">
+
+              <span class="item-blog-date dis-block flex-c-m pos1 size17 bg4 s-text1">
+                Date of purcharse: 29/05/2020
+              </span>
+            </a>
+
+            <div class="item-blog-txt p-t-33">
+              <h4 class="p-b-11">
+                <a class="m-text24">
+                  Finish check out to get your game's key 🔑
+                </a>
+              </h4>
+
+              <div class="s-text8 flex-w flex-m p-b-5">
+                <span>
+                  <?php echo "Customer: ".$_SESSION['auth']->email; ?>
+                  <span class="m-l-3 m-r-6">|</span>
+                </span>
+                <span>
+                  <?php echo $keyCount." keys of ".count($listCartItems)." games"; ?>
+                </span>
+                <br>
+              </div>
+              <div class="s-text8 flex-w flex-m p-b-21">
+                <span>
+                  <b style="color: red;"><u> Note </u></b>⚠: If you use <strong style="color: green;">ATM</strong>, choose a bank and <strong style="color: red;">do not</strong> fill the <strong style="color: green;">Expired Date</strong> filed & <strong style="color: green;">CVV</strong> field.<br>&emsp;&emsp;&emsp;&emsp;&nbsp; If you use <strong style="color: green;">VISA/Mastercard/JCB</strong>, <strong style="color: red;">do not</strong> choose bank and fill all fileds below.
+                </span>
+              </div>
+
+              <form class="leave-comment" action="" method="post">
+                <div class="rs2-select2 bo4 of-hidden w-size12 m-t-5 m-b-20 m-r-10">
+                  <select class="selection-2" name="bank-name">
+                    <option selected disabled hidden>Choose your Bank 🏦</option>
+                    <option>Vietcombank</option>
+                    <option>Techcombank</option>
+                    <option>Sacombank</option>
+                    <option>GPBank</option>
+                    <option>TMCP Việt Á</option>
+                    <option>Dầu Khí (PG Bank)</option>
+                    <option>TMCP Nam Á</option>
+                    <option>Quốc Tế (VIB)</option>
+                    <option>TMCP Phương Đông</option>
+                    <option>Đông Á (DAB)</option>
+                    <option>Vietinbank</option>
+                    <option>VPBank</option>
+                    <option>TMCP Đại Dương</option>
+                    <option>TMCP Bắc Á</option>
+                    <option>Tiên Phong</option>
+                    <option>HDBank</option>
+                    <option>BIDV</option>
+                    <option>Agribank</option>
+                    <option>Maritime Bank</option>
+                    <option>Navi Bank</option>
+                    <option>Quân Đọi (MB)</option>
+                    <option>Á Châu (ACB)</option>
+                    <option>TMCP An Bình (ABB)</option>
+                    <option>Eximbank</option>
+                  </select>
+                </div>
+                <span class="m-text2" style="color: red;"><?php if(isset($err)&&$err == "Wrong Email") echo "Wrong Email 📧" ?></span>
+
+                <div class="bo4 of-hidden size15 m-b-20">
+                  <input class="sizefull s-text7 p-l-22 p-r-22" type="text" name="name_in_cart" placeholder="Name In Card" required value="<?php if(isset($enteredEmail)) echo $enteredEmail ?>">
+                </div>
+
+                <span class="m-text2" style="color: red;"><?php if(isset($err)&&$err == "Wrong Password") echo "Wrong Password 🔑" ?></span>
+
+                <div class="bo4 of-hidden size15 m-b-20">
+                  <input class="sizefull s-text7 p-l-22 p-r-22" type="text" name="card_number" placeholder="Card Number" required  value="<?php if(isset($enteredPassword)) echo $enteredPassword ?>">
+                </div>
+
+                <span class="m-text2" style="color: red;"><?php if(isset($err)&&$err == "Wrong Password") echo "Wrong Password 🔑" ?></span>
+
+                <div class="bo4 of-hidden size15 m-b-20">
+                  <input class="sizefull s-text7 p-l-22 p-r-22" type="text" name="expried_day" placeholder="Expried Day" required  value="<?php if(isset($enteredPassword)) echo $enteredPassword ?>">
+                </div>
+
+                <span class="m-text2" style="color: red;"><?php if(isset($err)&&$err == "Wrong Password") echo "Wrong Password 🔑" ?></span>
+
+                <div class="bo4 of-hidden size15 m-b-20">
+                  <input class="sizefull s-text7 p-l-22 p-r-22" type="text" name="cvv" placeholder="CVV" required  value="<?php if(isset($enteredPassword)) echo $enteredPassword ?>">
+                </div>
+
+                <div class="w-size25">
+                  <!-- Button -->
+                  <button type="submit" class="flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4">
+                    Finish
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-lg-3 p-b-75">
+        <div class="rightbar">
+          <!-- Featured Products -->
+          <h4 class="m-text23 p-t-65 p-b-34" style="cursor: pointer;" onclick="redirectToCart()">
+            Your Cart 🛒
+          </h4>
+          <script type="text/javascript">
+            function redirectToCart(){
+              window.location.replace("?action=cart");
+            }
+          </script>
+
+          <ul class="bgwhite">
+            <?php $total = 0;foreach($listCartItems as $rows){ ?>
+              <li class="flex-w p-b-20">
+                <a href="?action=game-detail&id=<?php echo $rows->game_id; ?>" class="dis-block wrap-pic-w w-size22 m-r-20 trans-0-4 hov4">
+                  <img src="<?php echo $rows->image_720_932; ?>" alt="IMG-PRODUCT">
+                </a>
+
+                <div class="w-size23 p-t-5">
+                  <a href="?action=game-detail&id=<?php echo $rows->game_id; ?>" class="s-text20">
+                    <?php echo $rows->title; ?>
+                  </a>
+
+                  <span class="dis-block s-text17 p-t-6">
+                    <?php echo $rows->quantity; ?> x <?php echo number_format($rows->game_price, 0, ",", ".")." VND"; ?>
+                  </span>
+                  <span class="dis-block s-text17 p-t-6">
+                    Total: <?php echo number_format($rows->game_price*$rows->quantity, 0, ",", ".")." VND"; ?>
+                  </span>
+                </div>
+              </li>
+            <?php $total += $rows->quantity * $rows->game_price;} ?>
+          </ul>
+
+          <!-- Archive -->
+          <h4 class="m-text23 p-t-50 p-b-16">
+            Total: <?php echo number_format($total, 0, ",", ".")." VND"; ?>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<?php } else { ?>
+<section class="bg-title-page p-t-40 p-b-50 flex-col-c-m">
+  <h2 class="l-text2 t-center" style="color: #555555;">
+    You must login to check out 💵
+  </h2>
+</section>
+<?php } ?>

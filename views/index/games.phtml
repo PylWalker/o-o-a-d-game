@@ -1,0 +1,195 @@
+<?php
+	$listAllGames = $this->view->listAllGames;
+	$listAllGenres = $this->view->listAllGenres;
+	$gamesCount = $this->view->gamesCount;
+	//Debug
+	// echo "<pre>";
+	// print_r($listAllGames);
+	// echo "</pre>";
+	$max_page = floor($gamesCount['count']/9) + 1;
+?>
+<?php
+	if(isset($_GET['page'])){
+		$page = $_GET['page'];
+	} else {
+		$page = 1;
+	}
+	if($page >= 1 && $page <= $max_page){
+?>
+<script type="text/javascript">
+	var e = document.getElementById('games');
+	e.setAttribute("class", "sale-noti");
+	document.getElementById('page-title').innerHTML = 'Games';
+</script>
+<!-- Title Page -->
+<section class="bg-title-page p-t-50 p-b-40 flex-col-c-m" style="background-image: url(images/games_cover.jpg);">
+	<h2 class="l-text2 t-center">
+		Games
+	</h2>
+	<p class="m-text13 t-center">
+		New Assassin Collection 2020
+	</p>
+</section>
+
+
+<!-- Content page -->
+<section class="bgwhite p-t-55 p-b-65">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6 col-md-4 col-lg-3 p-b-50">
+				<div class="leftbar p-r-20 p-r-0-sm">
+					<!--  -->
+					<h4 class="m-text14 p-b-7">
+						Genres
+					</h4>
+
+					<ul class="p-b-54">
+						<li class="p-t-4">
+							<a href="#" class="s-text13 active1">
+								All
+							</a>
+						</li>
+						<?php foreach($listAllGenres as $genres){ ?>
+						<li class="p-t-4">
+							<input class="genres-box" type="checkbox" name="">
+							<a href="#" class="s-text13">
+								<?php echo $genres->name; ?>
+							</a>
+						</li>
+						<?php } ?>
+					</ul>
+					<!--  -->
+					<h4 class="m-text14 p-b-32">
+						Filters
+					</h4>
+
+					<div class="filter-price p-t-22 p-b-50 bo3">
+						<div class="m-text15 p-b-17">
+							Price Filter
+						</div>
+
+						<div class="wra-filter-bar">
+							<div id="filter-bar"></div>
+						</div>
+
+						<div class="flex-sb-m flex-w p-t-16">
+							<div class="s-text3 p-t-10 p-b-10">
+								From: <span id="value-lower">610</span> VND <br>
+								To: <span id="value-upper">980</span> VND
+							</div>
+						</div>
+					</div>
+
+					<div class="m-text15 p-b-17">
+						Title
+					</div>
+
+					<div class="search-product pos-relative bo4 of-hidden">
+						<input class="s-text7 size6 p-l-23 p-r-50" type="text" name="search-product" placeholder="Search Products...">
+
+						<button class="flex-c-m size5 ab-r-m color2 color0-hov trans-0-4">
+							<i class="fs-12 fa fa-search" aria-hidden="true"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm-6 col-md-8 col-lg-9 p-b-50">
+				<!--  -->
+				<div class="flex-sb-m flex-w p-b-35">
+					<div class="flex-w">
+						<div class="rs2-select2 bo4 of-hidden w-size12 m-t-5 m-b-5 m-r-10">
+							<select class="selection-2" name="sorting">
+								<option>Default Sorting</option>
+								<option>Popularity</option>
+								<option>Price: low to high</option>
+								<option>Price: high to low</option>
+							</select>
+						</div>
+					</div>
+
+					<span class="s-text8 p-t-5 p-b-5">
+						Showing <?php echo $listAllGames[0]->id; ?>–<?php echo $listAllGames[count($listAllGames) - 1]->id; ?> of <?php echo $gamesCount['count']; ?> games
+					</span>
+				</div>
+
+				<!-- Product -->
+				<div class="row">
+					<?php foreach($listAllGames as $games){ ?>
+					<div class="col-sm-12 col-md-6 col-lg-4 p-b-50">
+						<!-- Block2 -->
+						<div class="block2">
+							<div class="block2-img wrap-pic-w of-hidden pos-relative">
+								<img src="<?php echo $games->image_720_932; ?>" alt="IMG-PRODUCT">
+
+								<div class="block2-overlay trans-0-4">
+									<div class="block2-btn-addcart w-size1 trans-0-4">
+										<!-- Button -->
+										<button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+											Add to Cart
+										</button>
+									</div>
+								</div>
+							</div>
+
+							<div class="block2-txt p-t-20">
+								<a href="?action=game-detail&id=<?php echo $games->id; ?>" class="block2-name dis-block s-text3 p-b-5">
+									<?php echo $games->title; ?> with ID: <?php echo $games->id; ?>
+								</a>
+								<span class="block2-id" hidden><?php echo $games->id; ?></span>
+								<span class="block2-price m-text6 p-r-5">
+									<?php echo number_format($games->price, 0, ",", ".")." VND"; ?>
+								</span>
+							</div>
+						</div>
+					</div>
+					<?php } ?>
+				</div>
+
+				<!-- Pagination -->
+				<div class="pagination flex-m flex-w p-t-26">
+					<?php if($page > 2){ ?>
+						<a href="?action=games" class="item-pagination flex-c-m trans-0-4">1</a>
+						<a href="?action=games&page=<?php echo $page - 2; ?>" class="item-pagination flex-c-m trans-0-4" style="width: 100px;">⊂(´･◡･ ⊂ )</a>
+					<?php } ?>
+					<?php if($page > 1){ ?>
+						<a href="?action=games&page=<?php echo $page - 1; ?>" class="item-pagination flex-c-m trans-0-4"><?php echo $page - 1; ?></a>
+					<?php } ?>
+					<a href="?action=games&page=<?php echo $page; ?>" class="item-pagination flex-c-m trans-0-4 active-pagination"><?php echo $page; ?></a>
+					<?php if($page < $max_page){ ?>
+						<a href="?action=games&page=<?php echo $page + 1; ?>" class="item-pagination flex-c-m trans-0-4"><?php echo $page + 1; ?></a>
+					<?php } ?>
+					<?php if($page < $max_page - 1){ ?>
+						<a href="?action=games&page=<?php echo $page + 2; ?>" class="item-pagination flex-c-m trans-0-4" style="width: 100px;">(づ￣ ³￣)づ</a>
+						<a href="?action=games&page=<?php echo $max_page; ?>" class="item-pagination flex-c-m trans-0-4"><?php echo $max_page; ?></a>
+					<?php } ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<?php
+	} else {
+?>
+<script type="text/javascript">
+	var e = document.getElementById('cart');
+	e.setAttribute("class", "sale-noti");
+	document.getElementById('page-title').innerHTML = 'Cart';
+</script>
+<section class="bg-title-page p-t-40 p-b-50 flex-col-c-m">
+	<h2 class="l-text2 t-center" style="color: #555555;">
+		No game in this page 🎮
+	</h2>
+	<span>Back to <a href="">Shop</a> in <span id="time-remain">5</span> second</span>
+	<script type="text/javascript">
+		var timeRemain = 4;
+		setInterval(() => {
+		  document.getElementById('time-remain').innerHTML = timeRemain;
+		  timeRemain--;
+		  if(timeRemain === 0){
+		  	window.location.replace("?action=games");
+		  }
+		}, 1000);
+	</script>
+</section>
+<?php } ?>

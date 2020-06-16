@@ -1,0 +1,13 @@
+<a href="?action=game-detail&id=<?php echo $listFiveNewGames[0]->id; ?>" class="flex-c-m size2 m-text2 bg3 hov1 trans-0-4">
+
+
+
+RewriteEngine on
+
+RewriteRule ^home index.php [NC,L]
+RewriteRule ^login ?action=login [NC,L]
+RewriteRule ^Grand-Theft-Auto-IV--The-Complete-Edition ?action=game-detail&id=3 [NC,L]
+RewriteRule ^Red-Dead-Redemption-2 ?action=game-detail&id=5 [NC,L]
+RewriteRule ^Assassin-s-Creed---Odyssey ?action=game-detail&id=1 [NC,L]
+RewriteRule ^The-Witcher---3--Wild-Hunt ?action=game-detail&id=2 [NC,L]
+RewriteRule ^Grand-Theft-Auto-V ?action=game-detail&id=4 [NC,L]

@@ -1,0 +1,67 @@
+<?php
+	// echo "<pre>";
+	// print_r($this->view->err);
+	// echo "</pre>";
+	if(isset($this->view->err)){
+		$err = $this->view->err[0];
+		$enteredEmail = $this->view->err[1];
+		$enteredPassword = $this->view->err[2];
+	}
+	if(substr($this->view->redirect, 42) != "login"){
+		$_SESSION['redirect'] = $this->view->redirect;
+	} else {
+		$_SESSION['redirect'] = "?action=index";
+	}
+?>
+<script type="text/javascript">
+	var e = document.getElementById('shop');
+	e.setAttribute("class", "sale-noti");
+	document.getElementById('page-title').innerHTML = "Login";
+</script>
+
+<!-- Title Page -->
+<section class="bg-title-page p-t-40 p-b-50 flex-col-c-m" style="background-image: url(images/login_cover.png);">
+	<h2 class="l-text2 t-center">
+		Login
+	</h2>
+</section>
+
+<!-- content page -->
+<section class="bgwhite p-t-66 p-b-60">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 p-b-30">
+				<div class="p-r-20 p-r-0-lg">
+					<img class="contact-map size21" src="images/login_background.png"></img>
+				</div>
+			</div>
+
+			<div class="col-md-6 p-b-30">
+				<form class="leave-comment" action="" method="post">
+					<h4 class="m-text26 p-b-36 p-t-15">
+						Login for more offers
+					</h4>
+
+					<span class="m-text2" style="color: red;"><?php if(isset($err)&&$err == "Wrong Email") echo "Wrong Email 📧" ?></span>
+
+					<div class="bo4 of-hidden size15 m-b-20">
+						<input class="sizefull s-text7 p-l-22 p-r-22" type="email" name="email" placeholder="Email Address" required value="<?php if(isset($enteredEmail)) echo $enteredEmail ?>">
+					</div>
+
+					<span class="m-text2" style="color: red;"><?php if(isset($err)&&$err == "Wrong Password") echo "Wrong Password 🔑" ?></span>
+
+					<div class="bo4 of-hidden size15 m-b-20">
+						<input class="sizefull s-text7 p-l-22 p-r-22" type="password" name="password" placeholder="Password" required  value="<?php if(isset($enteredPassword)) echo $enteredPassword ?>">
+					</div>
+
+					<div class="w-size25">
+						<!-- Button -->
+						<button type="submit" class="flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4">
+							Login
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
